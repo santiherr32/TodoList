@@ -2,7 +2,7 @@
 
 Una aplicación completa de lista de tareas (Todo List) construida con arquitectura limpia, backend en .NET y frontend en Angular.
 
-## 🏗️ Arquitectura
+## Arquitectura
 
 El proyecto sigue los principios de **Arquitectura Limpia (Clean Architecture)** con separación clara de responsabilidades:
 
@@ -11,7 +11,7 @@ El proyecto sigue los principios de **Arquitectura Limpia (Clean Architecture)**
 - **Infrastructure**: Implementaciones de repositorios y configuración de base de datos
 - **WebApi**: Controladores REST API y configuración de ASP.NET Core
 
-## 🛠️ Tecnologías
+## Tecnologías
 
 ### Backend
 - **.NET 10.0**
@@ -27,14 +27,14 @@ El proyecto sigue los principios de **Arquitectura Limpia (Clean Architecture)**
 - **Lucide Icons** para iconografía
 - **Vitest** para testing
 
-## 📋 Requisitos Previos
+## Requisitos Previos
 
 - **.NET SDK 10.0** o superior
 - **Node.js 18+** y **npm**
 - **SQL Server** (LocalDB, Express o instancia completa)
 - **Angular CLI** (opcional, se instala globalmente)
 
-## 🚀 Instalación y Configuración
+## Instalación y Configuración
 
 ### 1. Clonar el repositorio
 ```bash
