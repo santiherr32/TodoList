@@ -1,6 +1,10 @@
-import { ApplicationConfig, provideZoneChangeDetection, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideRouter, } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
+import {
+  provideLucideIcons, LucidePencil, LucideTrash2, LucidePlus, LucideSun, LucideMoon, LucideMonitor,
+  LucideCircleCheck, LucideCircle, LucideX, LucideCalendar
+} from '@lucide/angular';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -8,5 +12,9 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(),
+    provideLucideIcons(
+      LucidePencil, LucideTrash2, LucidePlus, LucideSun, LucideMoon, LucideMonitor,
+      LucideCircleCheck, LucideCircle, LucideX, LucideCalendar
+    ),
   ]
 };

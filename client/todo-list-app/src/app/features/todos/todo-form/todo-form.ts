@@ -48,11 +48,7 @@ export class TodoForm implements OnInit {
   }
 
   submit(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
+    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
     this.submitting.set(true);
     this.serverErrors.set([]);
 
@@ -90,17 +86,14 @@ export class TodoForm implements OnInit {
   }
 
   isInvalid(field: string): boolean {
-    const control = this.form.get(field);
-    return !!(control?.invalid && control?.touched);
+    const c = this.form.get(field);
+    return !!(c?.invalid && c?.touched);
   }
 
   getError(field: string): string {
-    const control = this.form.get(field);
-    if (control?.hasError('required')) return 'Este campo es obligatorio.';
-    if (control?.hasError('maxlength')) {
-      const max = control.errors?.['maxlength'].requiredLength;
-      return `Máximo ${max} caracteres.`;
-    }
+    const c = this.form.get(field);
+    if (c?.hasError('required')) return 'Este campo es obligatorio.';
+    if (c?.hasError('maxlength')) return `Máximo ${c.errors?.['maxlength'].requiredLength} caracteres.`;
     return '';
   }
 

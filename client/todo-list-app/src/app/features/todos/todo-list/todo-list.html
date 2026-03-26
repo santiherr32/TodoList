@@ -1,72 +1,188 @@
 <div class="flex justify-between items-center mb-6">
-  <h2 class="text-xl font-semibold text-gray-700">Mis tareas</h2>
+  <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Mis tareas</h2>
   <button
-    (click)="goToCreate()"
-    class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition"
+    (click)="openDialog()"
+    class="flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-gray-900 dark:text-white text-sm font-medium px-4 py-2 rounded-lg transition"
   >
-    + Nueva tarea
+    <svg lucideIcon="plus" size="16"></svg>
+    Nueva tarea
   </button>
 </div>
 
+<!-- Lista -->
 @if (loading()) {
-  <div class="text-center py-12 text-gray-400">Cargando tareas...</div>
+  <div class="text-center py-12 text-gray-400 dark:text-gray-600">Cargando tareas...</div>
 }
 
 @if (!loading() && todos().length === 0) {
-  <div class="text-center py-12 text-gray-400">
+  <div class="text-center py-12 text-gray-400 dark:text-gray-600">
     <p class="text-lg">No hay tareas aún.</p>
     <p class="text-sm mt-1">Crea una nueva para empezar.</p>
   </div>
 }
 
 @if (!loading() && todos().length > 0) {
-  <ul class="space-y-3">
+  <ul class="space-y-2">
     @for (todo of todos(); track todo.id) {
       <li
-        class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-start gap-4 transition hover:shadow-md"
-        [class.opacity-60]="todo.isCompleted"
+        class="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 px-4 py-3 flex items-center gap-3 transition hover:shadow-sm group"
+        [class.opacity-50]="todo.isCompleted"
       >
-        <!-- Checkbox completado -->
-        <input
-          type="checkbox"
-          [checked]="todo.isCompleted"
-          (change)="toggleCompleted(todo)"
-          class="mt-1 h-4 w-4 accent-blue-600 cursor-pointer flex-shrink-0"
-        />
+        <!-- Checkbox -->
+        <button
+          (click)="toggleCompleted(todo)"
+          class="flex-shrink-0 text-gray-300 dark:text-gray-600 hover:text-primary-500 dark:hover:text-primary-400 transition"
+        >
+          <svg
+            [lucideIcon]="todo.isCompleted ? 'circle-check' : 'circle'"
+            size="20"
+            [class]="todo.isCompleted ? 'text-primary-500' : ''"
+          ></svg>
+        </button>
 
         <!-- Contenido -->
         <div class="flex-1 min-w-0">
           <p
-            class="font-medium text-gray-800 truncate"
+            class="text-sm font-medium text-gray-800 dark:text-gray-100 truncate"
             [class.line-through]="todo.isCompleted"
             [class.text-gray-400]="todo.isCompleted"
           >
             {{ todo.title }}
           </p>
           @if (todo.description) {
-            <p class="text-sm text-gray-500 mt-0.5 truncate">{{ todo.description }}</p>
+            <p class="text-xs text-gray-400 dark:text-gray-500 truncate mt-0.5">
+              {{ todo.description }}
+            </p>
           }
-          <p class="text-xs text-gray-400 mt-1">
-            Fecha límite: {{ todo.maxCompletionDate | date: 'dd/MM/yyyy' }}
+          <p class="text-xs text-gray-400 dark:text-gray-600 mt-0.5 flex items-center gap-1">
+            <svg lucideIcon="calendar" size="11"></svg>
+            {{ todo.maxCompletionDate | date: 'dd/MM/yyyy' }}
           </p>
         </div>
 
         <!-- Acciones -->
-        <div class="flex gap-2 flex-shrink-0">
+        <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition flex-shrink-0">
           <button
             (click)="goToEdit(todo.id)"
-            class="text-xs text-blue-600 hover:text-blue-800 font-medium px-2 py-1 rounded hover:bg-blue-50 transition"
+            title="Editar"
+            class="p-1.5 rounded-lg text-gray-400 hover:text-gray-500 hover:bg-gray-50 dark:hover:bg-primary-950 transition"
           >
-            Editar
+            <svg lucideIcon="pencil" size="15"></svg>
           </button>
           <button
             (click)="delete(todo.id)"
-            class="text-xs text-red-500 hover:text-red-700 font-medium px-2 py-1 rounded hover:bg-red-50 transition"
+            title="Eliminar"
+            class="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950 transition"
           >
-            Eliminar
+            <svg lucideIcon="trash-2" size="15"></svg>
           </button>
         </div>
       </li>
     }
   </ul>
+}
+
+<!-- Dialog estilo Todoist -->
+@if (dialogOpen()) {
+  <!-- Backdrop -->
+  <div
+    class="fixed inset-0 bg-black/30 dark:bg-black/60 backdrop-blur-sm z-40"
+    (click)="closeDialog()"
+  ></div>
+
+  <!-- Panel -->
+  <div class="fixed inset-0 z-50 flex items-center justify-center px-4">
+    <div
+      class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md border border-gray-100 dark:border-gray-800 overflow-hidden"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Header del dialog -->
+      <div
+        class="flex items-center justify-between px-5 pt-5 pb-3 border-b border-gray-100 dark:border-gray-800"
+      >
+        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-200">Nueva tarea</h3>
+        <button
+          (click)="closeDialog()"
+          class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
+          <svg lucideIcon="x" size="16"></svg>
+        </button>
+      </div>
+
+      <!-- Formulario -->
+      <form [formGroup]="quickForm" (ngSubmit)="submitQuick()" class="px-5 py-4 space-y-3">
+        <!-- Título -->
+        <input
+          formControlName="title"
+          type="text"
+          placeholder="Nombre de la tarea"
+          autofocus
+          class="w-full text-sm font-medium text-gray-800 dark:text-gray-100 bg-transparent placeholder-gray-400 dark:placeholder-gray-600 border-0 outline-none focus:ring-0 px-0"
+        />
+        @if (quickForm.get('title')?.invalid && quickForm.get('title')?.touched) {
+          <p class="text-red-500 text-xs -mt-2">
+            {{ getTitleError() }}
+          </p>
+        }
+
+        <!-- Descripción -->
+        <textarea
+          formControlName="description"
+          rows="2"
+          placeholder="Descripción (opcional)"
+          class="w-full text-sm text-gray-600 dark:text-gray-400 bg-transparent placeholder-gray-400 dark:placeholder-gray-600 border-0 outline-none focus:ring-0 px-0 resize-none"
+        >
+        </textarea>
+        @if (quickForm.get('description')?.invalid && quickForm.get('description')?.touched) {
+          <p class="text-red-500 text-xs">Máximo 200 caracteres.</p>
+        }
+
+        <!-- Fecha -->
+        <div class="flex items-center gap-2 pt-1 border-t border-gray-100 dark:border-gray-800">
+          <svg lucideIcon="calendar" size="14" class="text-gray-400"></svg>
+          <input
+            formControlName="maxCompletionDate"
+            type="date"
+            [min]="today"
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-600 dark:text-gray-40 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition"
+          />
+          @if (
+            quickForm.get('maxCompletionDate')?.invalid &&
+            quickForm.get('maxCompletionDate')?.touched
+          ) {
+            <span class="text-red-500 text-xs">Requerida.</span>
+          }
+        </div>
+
+        <!-- Errores del servidor -->
+        @if (serverErrors().length > 0) {
+          <ul
+            class="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-900 rounded-lg p-3 space-y-1"
+          >
+            @for (error of serverErrors(); track error) {
+              <li class="text-red-600 dark:text-red-400 text-xs">• {{ error }}</li>
+            }
+          </ul>
+        }
+
+        <!-- Acciones -->
+        <div class="flex justify-end gap-2 pt-2">
+          <button
+            type="button"
+            (click)="closeDialog()"
+            class="text-xs text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            [disabled]="submitting()"
+            class="text-xs font-medium bg-gray-500 hover:bg-gray-600 disabled:bg-gray-300 text-gray-900 dark:text-white px-4 py-1.5 rounded-lg transition"
+          >
+            {{ submitting() ? 'Guardando...' : 'Añadir tarea' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 }
