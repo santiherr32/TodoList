@@ -52,6 +52,15 @@ Edita el archivo `src/TodoListApi.WebApi/appsettings.json` y configura tu cadena
   }
 }
 ```
+ó
+
+```json
+{
+    "ConnectionStrings": {
+        "DefaultConnection": "Server=localhost,1433;Database=TodoListDb;User Id=TU_USUARIO;Password=TU_PASSWORD;TrustServerCertificate=True"
+    }
+}
+```
 
 Para SQL Server Express:
 ```json
@@ -70,7 +79,7 @@ cd client/todo-list-app
 npm install
 ```
 
-## ▶️ Cómo Ejecutar
+## Cómo Ejecutar
 
 ### Backend (API)
 ```bash
@@ -92,7 +101,7 @@ ng serve
 
 La aplicación estará disponible en: `http://localhost:4200`
 
-## 📡 API Endpoints
+## API Endpoints
 
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
@@ -112,7 +121,7 @@ La aplicación estará disponible en: `http://localhost:4200`
 }
 ```
 
-## 🏛️ Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 TodoListApi/
@@ -136,20 +145,6 @@ TodoListApi/
 │       ├── src/
 │       └── package.json
 └── TodoListApi.slnx                 # Archivo de solución
-```
-
-## 🧪 Testing
-
-### Backend
-```bash
-cd src/TodoListApi.WebApi
-dotnet test
-```
-
-### Frontend
-```bash
-cd client/todo-list-app
-npm test
 ```
 
 ## Desarrollo
