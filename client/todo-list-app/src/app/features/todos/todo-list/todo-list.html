@@ -1,0 +1,72 @@
+<div class="flex justify-between items-center mb-6">
+  <h2 class="text-xl font-semibold text-gray-700">Mis tareas</h2>
+  <button
+    (click)="goToCreate()"
+    class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition"
+  >
+    + Nueva tarea
+  </button>
+</div>
+
+@if (loading()) {
+  <div class="text-center py-12 text-gray-400">Cargando tareas...</div>
+}
+
+@if (!loading() && todos().length === 0) {
+  <div class="text-center py-12 text-gray-400">
+    <p class="text-lg">No hay tareas aún.</p>
+    <p class="text-sm mt-1">Crea una nueva para empezar.</p>
+  </div>
+}
+
+@if (!loading() && todos().length > 0) {
+  <ul class="space-y-3">
+    @for (todo of todos(); track todo.id) {
+      <li
+        class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-start gap-4 transition hover:shadow-md"
+        [class.opacity-60]="todo.isCompleted"
+      >
+        <!-- Checkbox completado -->
+        <input
+          type="checkbox"
+          [checked]="todo.isCompleted"
+          (change)="toggleCompleted(todo)"
+          class="mt-1 h-4 w-4 accent-blue-600 cursor-pointer flex-shrink-0"
+        />
+
+        <!-- Contenido -->
+        <div class="flex-1 min-w-0">
+          <p
+            class="font-medium text-gray-800 truncate"
+            [class.line-through]="todo.isCompleted"
+            [class.text-gray-400]="todo.isCompleted"
+          >
+            {{ todo.title }}
+          </p>
+          @if (todo.description) {
+            <p class="text-sm text-gray-500 mt-0.5 truncate">{{ todo.description }}</p>
+          }
+          <p class="text-xs text-gray-400 mt-1">
+            Fecha límite: {{ todo.maxCompletionDate | date: 'dd/MM/yyyy' }}
+          </p>
+        </div>
+
+        <!-- Acciones -->
+        <div class="flex gap-2 flex-shrink-0">
+          <button
+            (click)="goToEdit(todo.id)"
+            class="text-xs text-blue-600 hover:text-blue-800 font-medium px-2 py-1 rounded hover:bg-blue-50 transition"
+          >
+            Editar
+          </button>
+          <button
+            (click)="delete(todo.id)"
+            class="text-xs text-red-500 hover:text-red-700 font-medium px-2 py-1 rounded hover:bg-red-50 transition"
+          >
+            Eliminar
+          </button>
+        </div>
+      </li>
+    }
+  </ul>
+}
