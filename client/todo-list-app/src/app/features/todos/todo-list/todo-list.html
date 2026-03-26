@@ -2,7 +2,7 @@
   <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Mis tareas</h2>
   <button
     (click)="openDialog()"
-    class="flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-gray-900 dark:text-white text-sm font-medium px-4 py-2 rounded-lg transition"
+    class="flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-primary-50 dark:text-white text-sm font-medium px-4 py-2 rounded-lg transition"
   >
     <svg lucideIcon="plus" size="16"></svg>
     Nueva tarea
@@ -100,7 +100,7 @@
       <div
         class="flex items-center justify-between px-5 pt-5 pb-3 border-b border-gray-100 dark:border-gray-800"
       >
-        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-200">Nueva tarea</h3>
+        <h3 class="text-sm font-semibold text-white-700 dark:text-gray-200">Nueva tarea</h3>
         <button
           (click)="closeDialog()"
           class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -112,12 +112,15 @@
       <!-- Formulario -->
       <form [formGroup]="quickForm" (ngSubmit)="submitQuick()" class="px-5 py-4 space-y-3">
         <!-- Título -->
+        <label class="block text-sm text-gray-500 dark:text-gray-400" for="title">Titulo:</label>
         <input
+          id="title"
+          name="title"
           formControlName="title"
           type="text"
           placeholder="Nombre de la tarea"
           autofocus
-          class="w-full text-sm font-medium text-gray-800 dark:text-gray-100 bg-transparent placeholder-gray-400 dark:placeholder-gray-600 border-0 outline-none focus:ring-0 px-0"
+          class="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
         />
         @if (quickForm.get('title')?.invalid && quickForm.get('title')?.touched) {
           <p class="text-red-500 text-xs -mt-2">
@@ -126,11 +129,16 @@
         }
 
         <!-- Descripción -->
+        <label class="block text-sm text-gray-500 dark:text-gray-400" for="description"
+          >Descripción (opcional):</label
+        >
         <textarea
+          name="description"
+          id="description"
           formControlName="description"
           rows="2"
-          placeholder="Descripción (opcional)"
-          class="w-full text-sm text-gray-600 dark:text-gray-400 bg-transparent placeholder-gray-400 dark:placeholder-gray-600 border-0 outline-none focus:ring-0 px-0 resize-none"
+          placeholder="Agrega aqui detalles adicionales a la tarea..."
+          class="w-full border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
         >
         </textarea>
         @if (quickForm.get('description')?.invalid && quickForm.get('description')?.touched) {
@@ -144,7 +152,7 @@
             formControlName="maxCompletionDate"
             type="date"
             [min]="today"
-            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-600 dark:text-gray-40 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition"
+            class="border border-gray-300 rounded-lg px-3 py-2 mt-2 text-sm text-gray-600 dark:text-gray-40 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
           />
           @if (
             quickForm.get('maxCompletionDate')?.invalid &&
@@ -177,7 +185,7 @@
           <button
             type="submit"
             [disabled]="submitting()"
-            class="text-xs font-medium bg-gray-500 hover:bg-gray-600 disabled:bg-gray-300 text-gray-900 dark:text-white px-4 py-1.5 rounded-lg transition"
+            class="text-xs font-medium bg-primary-500 hover:bg-primary-600 disabled:bg-gray-300 text-primary-50 dark:text-white px-4 py-1.5 rounded-lg transition"
           >
             {{ submitting() ? 'Guardando...' : 'Añadir tarea' }}
           </button>

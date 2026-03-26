@@ -1,6 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+@config "../tailwind.config.js";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root:not(.dark) {
+  input[type='date']::-webkit-calendar-picker-indicator {
+    filter: invert(0);
+  }
+}
 
 @media (prefers-color-scheme: dark) {
   input[type='date']::-webkit-calendar-picker-indicator {
